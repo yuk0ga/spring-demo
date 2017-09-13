@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+
+    </head>
+    <body>
+        Hello <span th:text="${user.username}">World!</span>
+        <a th:href="@{/logout}">ログアウト</a>
+
+        <form method="post" th:action="@{/}" th:object="${tweet}">
+            <input type="text" name="content"/>
+            <button type="submit">つぶやくぜ</button>
+            <ul th:if="${#fields.hasErrors('*')}">
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+            </ul>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>つぶやき</th>
+                    <th>時間</th>
+                    <th>ユーザー</th>
+                    <th>削除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tweet : ${tweets}">
+                    <td th:text="${tweet.id}">IDが入ります</td>
+                    <td th:text="${tweet.content}">つぶやきが入ります</td>
+                    <td th:text="${tweet.createdAt}">時間が入ります</td>
+                    <td th:text="${tweet.user.username}">ユーザー名が入ります</td>
+                    <td><a th:if="${tweet.user.id} eq ${user.id}" th:href="@{/{id}(id=${tweet.id},_method=delete)}">削除</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
